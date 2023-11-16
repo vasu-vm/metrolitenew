@@ -1,0 +1,18 @@
+.ThicknessContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 1rem;
+    width: 600px;
+    justify-content: center;
+  }
+  .DataHeading {
+    width: 200px;
+    font-size: small;
+  }
+
+  .DataHeadingData {
+    width: 100px;
+    font-size: small;
+    
+  }

@@ -1,0 +1,14 @@
+.LayoutContainer {
+    display: flex;
+    flex-direction: row;
+    background-color: aqua;
+    justify-content: center;
+    height: 75px;
+     
+}
+.HeaderContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 20px;
+}

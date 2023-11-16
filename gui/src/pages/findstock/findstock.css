@@ -1,0 +1,23 @@
+.findstockcontainer {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4px;
+    margin-left: 20px;
+}
+.findstockitem{
+    display: flex;
+    justify-content: space-between;
+}
+.loginButton{
+    height: 50px;
+    background-color: blue;
+    color: aliceblue;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    margin: 0 35px;
+}

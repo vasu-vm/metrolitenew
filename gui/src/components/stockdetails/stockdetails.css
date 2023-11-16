@@ -1,0 +1,29 @@
+.BrandContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 1rem;
+    width: 600px;
+    justify-content: center;
+  }
+
+  .DataHeading {
+    width: 30px;
+    font-size: small;
+    
+  }
+  .EditData {
+    width: 100px;
+    font-size: small;
+    
+  }
+  .DataHeadingData {
+    width: 100px;
+    font-size: small;
+    
+  }
+
+.DataHeadingBrand {
+    width: 100px;
+    font-size: small;
+}
