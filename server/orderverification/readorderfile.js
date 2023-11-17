@@ -234,7 +234,10 @@ module.exports.verifyorder = async function(req, res, filename)
           // console.log("Result",metorder.returnerrortext())
           let text1 = metorder.returnerrortext()
           //console.log(text1)
-          res.status(201).send(`Result is ${text1}`)
+          if(text1.length > 1)
+            res.status(201).send(`Result is ${text1}`)
+          else
+            res.status(201).send("Success")
 
           // return(metorder.returnerrortext())
 

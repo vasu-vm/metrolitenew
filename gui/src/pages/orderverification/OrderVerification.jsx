@@ -77,6 +77,7 @@ const handleVerify = async (event, type) => {
       setVerifyResult(response.data)
       setInsertStatus(true)
       setUploadStatusPurchase(!uploadstatuspurchase)
+      setOrderFile([])
     }catch (err) {
       if(err.response){
         console.log(err.response.data)
