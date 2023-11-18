@@ -1,3 +1,14 @@
+const mysql = require('mysql2');
+
+// Create a MySQL connection
+const connection = mysql.createConnection({
+  host: 'localhost',
+      user: 'root',
+      password: 'Venus!2#',
+      database: 'vasudb'
+  
+});
+
 const db1 = require('../db');
 
 module.exports.deletecoilpurchase = async function(company){
@@ -32,11 +43,31 @@ module.exports.insertstockpurchase = async function(obj , company){
     var brand = obj['Brand'].trim();
     if(brand.includes("ragati") || brand.includes("p+") )
         brand = "P+"
-    const [data] = await db.query("call coil_purchase_create(?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?) " ,
+    
+    //=====================================
+    connection.query("call coil_purchase_create(?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?) " ,
+            [obj['Coil ID'], brand, obj['Supplier ID'],obj['Thickness'] ,
+            obj['Colour'], obj['Weight'], obj['Location'],obj['AZValue'],
+            obj['ZincValue'], gfstatus, datestring,compstatus,obj['Remarks'] ], (err, results) => {
+      if (err) {
+        console.error('Error inserting records:', err);
+      } else {
+        console.log('Records inserted successfully:', results);
+      }
+    
+      // Close the MySQL connection
+      connection.end();
+    });
+    
+    //=====================================
+    /*const [data] = await connection.query("call coil_purchase_create(?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?) " ,
             [obj['Coil ID'], brand, obj['Supplier ID'],obj['Thickness'] ,
             obj['Colour'], obj['Weight'], obj['Location'],obj['AZValue'],
             obj['ZincValue'], gfstatus, datestring,compstatus,obj['Remarks'] ]);
-     return data[0][0].affectedRows;
+    connection.end(); */
+
+     //return data[0][0].affectedRows;
+     return 1;
 
 }
 module.exports.insertcoildaystat = async function(obj, company){

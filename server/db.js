@@ -5,12 +5,18 @@ const config = {
       user: 'root',
       password: 'Venus!2#',
       database: 'vasudb',
+      waitForConnections: true,
+      connectionLimit: 3000, // Adjust this limit based on your requirements
+      queueLimit: 0
     },
     database2: {
       host: 'localhost',
       user: 'root',
       password: 'Venus!2#',
       database: 'heavydb',
+      waitForConnections: true,
+      connectionLimit: 3000, // Adjust this limit based on your requirements
+      queueLimit: 0
     },
   };
   function createDatabasePool(company = 'Roofing') {
