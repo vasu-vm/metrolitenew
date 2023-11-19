@@ -13,19 +13,19 @@ const StockdetailsReadOnlyRow = ({ stock, handleEditClick, handleDeleteClick }) 
         <td className="DataHeadingBrand">{stock.FinalWeight}</td>
         <td className="DataHeadingBrand">{stock.Sqft}</td>
         
-        <td className="DataHeading">{stock.Location}</td>
-        <td className="DataHeading">{stock.GFStatus}</td>
-        <td className="DataHeading">{stock.AZValue}</td>
-        <td className="DataHeading">{stock.Supplier}</td>
+        <td className="DataHeadingBrand">{stock.Location}</td>
+        <td className="DataHeadingBrand">{stock.GFStatus}</td>
+        <td className="DataHeading1">{stock.AZValue}</td>
+        <td className="DataHeading1">{stock.Supplier}</td>
        
-        <td>
-          <button
+        <td className="DataHeading">
+          <button className="ActionButton"
             type="button"
             onClick={(event) => handleEditClick( event, stock.CoilID )}
           >
             Edit
           </button>
-          <button type="button" onClick={() => handleDeleteClick(stock.CoilID)}>
+          <button className="ActionButton" type="button" onClick={() => handleDeleteClick(stock.CoilID)}>
             Delete
           </button>
         </td>

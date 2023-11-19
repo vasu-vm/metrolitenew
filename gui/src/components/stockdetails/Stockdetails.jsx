@@ -5,7 +5,8 @@ import StockdetailsEditRow from './StockdetailsEditRow';
 import StockdetailsReadOnlyRow from './StockdetailsReadOnlyRow'
 
 import api from '../../api/metstock'
-import "./stockdetails.css"
+
+import './stockdetails.css'
 
 export default function Stockdetails() {
     const [stockdetails, setStockdetails] = useState([]);
@@ -103,10 +104,10 @@ export default function Stockdetails() {
                 <th className="DataHeadingData">OpenCM</th>
                 <th className="DataHeadingData">F-Weight</th>
                 <th className="DataHeadingData">Sqft</th>
-                <th className="DataHeading">Location</th>
-                <th className="DataHeading">GFStatus</th>
-                <th className="DataHeading">AZValue</th>
-                <th className="DataHeading">Supplier</th>
+                <th className="DataHeadingData">Location</th>
+                <th className="DataHeadingData">GFStatus</th>
+                <th className="DataHeadingData">AZValue</th>
+                <th className="DataHeadingData">Supplier</th>
                 
               </tr>
             </thead>

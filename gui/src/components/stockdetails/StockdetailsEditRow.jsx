@@ -84,8 +84,8 @@ const StockdetailsEditRow = ({
       </td>
      
       <td>
-        <button type="submit" onClick={handleUpdate}>Save</button>
-        <button type="button" onClick={handleCancelClick}>
+        <button className="ActionButton" type="submit" onClick={handleUpdate}>Save</button>
+        <button className="ActionButton" type="button" onClick={handleCancelClick}>
           Cancel
         </button>
       </td>

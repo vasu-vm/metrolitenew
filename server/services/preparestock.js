@@ -1,13 +1,6 @@
 const mysql = require('mysql2/promise');
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'Venus!2#',
-    database: 'vasudb',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-  });
+const { createDatabasePool } = require('../db1');
+/*
   const config = {
     database1: {
       host: 'localhost',
@@ -28,12 +21,13 @@ const pool = mysql.createPool({
       queueLimit: 0
     },
   };
-  function createDatabasePool(company = 'Roofing') {
-    console.log(`${company}`)
+  function createDatabasePool1(company = 'Roofing') {
+    // console.log(`${company}`)
     const dbConfig = company === 'Roofing' ? config.database1 : config.database2;
     return mysql.createPool(dbConfig).getConnection()
     // return dbConfig.getConnection();
   }
+*/
 async function insertRecords(records, company) {
     // console.log("insertRecords")
     const tableName = 'metstockdetails';
@@ -82,7 +76,7 @@ async function processAndInsertData(req, res) {
 
   try {
     // Get a connection from the pool
-    connection = await pool.getConnection();
+    connection = await createDatabasePool(req.company);
     const [records] = await connection.execute("select a.Specification, b.Thickness, b.SqftPerMT from metbrands a , metcoilthicknesstypes b where b.BrandID = a.BrandID order by a.Specification")
     thicknessArray.push(...records)
     const [supplierrecords] = await connection.execute("select * from metsuppliers")

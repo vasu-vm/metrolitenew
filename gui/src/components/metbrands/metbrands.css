@@ -22,3 +22,11 @@
     width: 100px;
     font-size: small;
 }
+.ActionButton {
+  width: 70px;
+  font-size: small;
+  background-color: blue;
+  color: bisque;
+  border-radius: 5px;
+  margin-right: 3px;
+}

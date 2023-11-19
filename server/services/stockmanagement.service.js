@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const { getconnection } = require('../db1');
 
 // Create a MySQL connection
 /*
@@ -10,6 +11,7 @@ const connection = mysql.createConnection({
   
 });
 */
+/*
 const config = {
   database1: {
     host: 'localhost',
@@ -36,6 +38,7 @@ function getconnection(company = 'Roofing') {
   return mysql.createConnection(dbConfig)
   // return dbConfig.getConnection();
 }
+*/
 const db1 = require('../db');
 
 module.exports.deletecoilpurchase = async function(company){
