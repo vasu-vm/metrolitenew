@@ -6,7 +6,7 @@ const config = {
       password: 'Venus!2#',
       database: 'vasudb',
       waitForConnections: true,
-      connectionLimit: 3000, // Adjust this limit based on your requirements
+      connectionLimit: 100, // Adjust this limit based on your requirements
       queueLimit: 0
     },
     database2: {
@@ -15,12 +15,12 @@ const config = {
       password: 'Venus!2#',
       database: 'heavydb',
       waitForConnections: true,
-      connectionLimit: 3000, // Adjust this limit based on your requirements
+      connectionLimit: 100, // Adjust this limit based on your requirements
       queueLimit: 0
     },
   };
   function createDatabasePool(company = 'Roofing') {
-    console.log(`${company}`)
+    // console.log(`${company}`)
     const dbConfig = company === 'Roofing' ? config.database1 : config.database2;
     return mysql.createPool(dbConfig);
   }

@@ -1,6 +1,7 @@
 const mysql = require('mysql2');
 
 // Create a MySQL connection
+/*
 const connection = mysql.createConnection({
   host: 'localhost',
       user: 'root',
@@ -8,7 +9,33 @@ const connection = mysql.createConnection({
       database: 'vasudb'
   
 });
-
+*/
+const config = {
+  database1: {
+    host: 'localhost',
+    user: 'root',
+    password: 'Venus!2#',
+    database: 'vasudb',
+    waitForConnections: true,
+    connectionLimit: 100, // Adjust this limit based on your requirements
+    queueLimit: 0
+  },
+  database2: {
+    host: 'localhost',
+    user: 'root',
+    password: 'Venus!2#',
+    database: 'heavydb',
+    waitForConnections: true,
+    connectionLimit: 100, // Adjust this limit based on your requirements
+    queueLimit: 0
+  },
+};
+function getconnection(company = 'Roofing') {
+  // console.log(`${company}`)
+  const dbConfig = company === 'Roofing' ? config.database1 : config.database2;
+  return mysql.createConnection(dbConfig)
+  // return dbConfig.getConnection();
+}
 const db1 = require('../db');
 
 module.exports.deletecoilpurchase = async function(company){
@@ -31,6 +58,7 @@ module.exports.insertstockpurchase = async function(obj , company){
     // console.log("Inside insertstockpurchase service")
     // console.log(obj)
     const db = db1(company)
+    const connection = getconnection(company)
     var excelDateValue = obj['ArrivalDate(yyyy-mm-dd)']; // Replace with your Excel date value
     var javascriptDate = new Date((excelDateValue - 25569) * 86400 * 1000);
     var datestring = javascriptDate.getFullYear()+"-"+(javascriptDate.getMonth() +1) +"-"+javascriptDate.getDate();

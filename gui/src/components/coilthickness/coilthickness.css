@@ -5,6 +5,9 @@
     padding: 1rem;
     width: 600px;
     justify-content: center;
+    width: 98%;
+    margin-top: 5px;
+    margin-bottom: 75px;
   }
   .DataHeading {
     width: 200px;

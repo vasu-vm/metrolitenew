@@ -51,30 +51,8 @@ async function insertcoildaystat(row, company)
     return   rowcount;  
 
 }
-async function readAndDeleteExcelFile(filePath) {
-  try {
-    // Read the Excel file
-    const workbook = XLSX.readFile(filePath);
 
-    // Here, you can process the data in the Excel file as needed.
-    // For example, you can access a specific sheet and its data:
-    const sheetName = workbook.SheetNames[0]; // Get the first sheet name
-    const worksheet = workbook.Sheets[sheetName];
-    const excelData = XLSX.utils.sheet_to_json(worksheet);
-
-    console.log('Excel Data:', excelData);
-
-    // Delete the Excel file
-     fs.unlink(filePath).then;
-
-    console.log('Excel file deleted successfully.');
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-
-async function insertIntoMySQL(records , company) {
+async function insertIntoMySQLPurchase(records , company) {
   const connection = await mysql.createConnection(getMySqlConfig(company));
 
   try {
@@ -104,13 +82,44 @@ async function insertIntoMySQL(records , company) {
       if(location == "undefined")
             location = ""
                    
-      console.log(obj['Coil ID'], brand, obj['Supplier ID'],obj['Thickness'] ,
+      /*console.log(obj['Coil ID'], brand, obj['Supplier ID'],obj['Thickness'] ,
       colour, obj['Weight'], location,obj['AZValue'],
-      obj['ZincValue'], gfstatus, datestring,compstatus,remarks)
+      obj['ZincValue'], gfstatus, datestring,compstatus,remarks) */
       await connection.execute("call coil_purchase_create(?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?) " ,
       [obj['Coil ID'], brand, obj['Supplier ID'],obj['Thickness'] ,
       colour, obj['Weight'], location,obj['AZValue'],
       obj['ZincValue'], gfstatus, datestring,compstatus,remarks]);
+    }
+
+    console.log('Records inserted successfully.');
+  } catch (error) {
+    console.error('Error inserting records:', error);
+  } finally {
+    // Close the MySQL connection
+    await connection.end();
+  }
+}
+
+async function insertIntoMySQLDetails(records , company) {
+  const connection = await mysql.createConnection(getMySqlConfig(company));
+
+  try {
+    //const insertQuery = 'INSERT INTO testing VALUES (10)';
+    
+    for (const obj of records) {
+      var excelDateValue = obj['StockDate(DD-MM-YYYY)']; // Replace with your Excel date value
+      var javascriptDate = new Date((excelDateValue - 25569) * 86400 * 1000);
+      var datestring = javascriptDate.getFullYear()+"-"+(javascriptDate.getMonth() +1) +"-"+javascriptDate.getDate();
+      var opencm = String(obj['OpenCM']).trim();
+      if(opencm == "undefined")
+            opencm = 0
+      var status = String(obj['Status']).trim();
+      if(status == "undefined")
+            status = "None"
+            
+      // console.log(obj['CoilID'], opencm, datestring, obj['Location'], status)
+      await connection.execute("call coil_daystat_create( ?, ?, ?, ?, ?) " ,
+      [obj['CoilID'], opencm, datestring, obj['Location'], status]);
     }
 
     console.log('Records inserted successfully.');
@@ -137,7 +146,7 @@ router.get('/' ,  async function(req, res)
     let result2 = 0;
     let deleterec = await stockmanagementservice.deletecoilpurchase(req.company);
     console.log(deleterec);
-    await insertIntoMySQL(data , req.company);
+    await insertIntoMySQLPurchase(data , req.company);
     console.log(data.length)
     fs.unlink(filePath , (error  )=> {
       if(error) {
@@ -171,15 +180,8 @@ router.get('/:type' ,  async function(req, res) {
       const data = XLSX.utils.sheet_to_json(sheet);
       let result2 = 0;
       let deleterec = await stockmanagementservice.deletecoildaystat(req.company);
+      await insertIntoMySQLDetails(data , req.company);
       // console.log(deleterec);
-      data.forEach((row, index) => {
-           const result1 = insertcoildaystat(row , req.company).then(returnValue => {
-            // console.log('Return value:', returnValue);
-            // result1+=returnValue;
-          })
-          result2 = (result2 + 1);
-       
-      })
       console.log(data.length)
       fs.unlink(filePath , (error  )=> {
         if(error) {

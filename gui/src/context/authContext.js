@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import api from '../api/metstock'
+
 
 export const AuthContext = createContext();
 
