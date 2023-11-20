@@ -4,9 +4,11 @@ const path = require('path');
 const router = express.Router();
 const fs = require('fs');
 const mysql = require('mysql2/promise');
+const { getconnection} = require('../db1')
 
 const stockmanagementservice = require('../services/stockmanagement.service')
 const tokenverification = require('./tokenverification.controller')
+
 const mysqlConfig = {
   host: 'localhost',
   user: 'root',
@@ -53,7 +55,7 @@ async function insertcoildaystat(row, company)
 }
 
 async function insertIntoMySQLPurchase(records , company) {
-  const connection = await mysql.createConnection(getMySqlConfig(company));
+  const connection = await getconnection(company);
 
   try {
     //const insertQuery = 'INSERT INTO testing VALUES (10)';
@@ -101,7 +103,7 @@ async function insertIntoMySQLPurchase(records , company) {
 }
 
 async function insertIntoMySQLDetails(records , company) {
-  const connection = await mysql.createConnection(getMySqlConfig(company));
+  const connection = await getconnection(company);
 
   try {
     //const insertQuery = 'INSERT INTO testing VALUES (10)';
