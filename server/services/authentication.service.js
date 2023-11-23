@@ -22,7 +22,7 @@ module.exports.login =  async function(req, res)
 
         const { password, ...others } = data[0];
         console.log("-----------")
-        res.cookie("metrolite", token, {httpOnly:true}).status(200).json(others);
+        res.cookie("metrolite", token, {httpOnly:false  }).status(200).json(others);
     
 }
 

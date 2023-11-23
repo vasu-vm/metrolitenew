@@ -73,6 +73,7 @@ async function processAndInsertData(req, res) {
   let connection;
   const thicknessArray = [];
   const supplierArray = [];
+  //console.log("Inside processAndInsertData")
 
   try {
     // Get a connection from the pool
@@ -95,7 +96,7 @@ async function processAndInsertData(req, res) {
       
       // Make changes to the row if needed
       // For example, you can modify the values or add new properties
-      let sqft = 1
+        let sqft = 1
         let finalsqft = 1
         const targetObject = thicknessArray.find(item => item.Specification === row.Brand && item.Thickness === row.Thickness);
         if (targetObject) {
@@ -104,10 +105,16 @@ async function processAndInsertData(req, res) {
         } else {
             console.log(`Object with brand ${row.Brand} and thickness ${row.Thickness} not found.`);
         }
-        if(row.OpenCM)
+        if(Number(row.OpenCM))
+        {
             finalsqft = (row.OpenCM * 0.15 * sqft)
+            //console.log("OpenCM" , row.OpenCM)
+        }
         else
+        {
             finalsqft = (row.Weight * sqft)
+            //console.log("Weight" , row.Weight)
+        }
         const targetObjectBrand = supplierArray.find(item => item.SupplierID == row.SupplierID)
         let SupplierDtls = "Unknown"
         if(!targetObjectBrand)
@@ -119,7 +126,7 @@ async function processAndInsertData(req, res) {
           SupplierDtls = targetObjectBrand.Address;
         }
         
-        let finalWeight = row.OpenCM ? ( row.OpenCM * 0.15) : ( row.Weight)
+        let finalWeight = Number(row.OpenCM) ? ( row.OpenCM * 0.15) : ( row.Weight)
       return {
         CoilID: row.CoilID,
           Brand: row.Brand,
