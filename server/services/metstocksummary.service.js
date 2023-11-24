@@ -14,20 +14,26 @@ module.exports.getstocksummary = async function(req){
 module.exports.getsummaryusingall = async function(req)
 {   
     db = db1(req.company)
-    console.log("Find Stock Details")
+    //console.log("Find Stock Details")
     const brand = req.body.brand; 
     const thickness = req.body.thickness;
-    const color = req.body.colour;
-    const gfstatus = req.body.gfstatus;
+    let color = req.body.colour;
+    let gfstatus = req.body.gfstatus;
     let azvalue = req.body.azvalue;
+    if(brand == "V+")
+    {
+        color = ""
+        gfstatus = "N"
+    }
 
-
+    //console.log(brand,thickness, color,gfstatus,azvalue)
     const [row] = await db.query("select * from metstocksummary where Brand = ? and Thickness = ? and \
     Colour = ? and GFStatus = ? and AZValue = ?" , [brand,thickness, color,gfstatus,azvalue])
     //.catch(function(err){
     //     console.log(err)
     //})
     //removed catch since we have added global error handling
+    // console.log(row)
     return row;
 
 }

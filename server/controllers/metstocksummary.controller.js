@@ -34,9 +34,9 @@ router.post('/' ,  async function(req, res) {
     tokenverification.verify(req, res)
     if(res.statusCode > 200)
         return;
-    console.log(req.params.brandid)
-    console.log(req.params.thickness)
-    console.log(req.body)
+    //console.log(req.params.brandid)
+    //console.log(req.params.thickness)
+    //console.log(req.body)
     
     
     const metbrand = await metstocksummaryservice.getsummaryusingall(req);

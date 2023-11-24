@@ -9,7 +9,7 @@ const Header = () => {
   const {currentUser} = useContext(AuthContext);
   const navigate = useNavigate()
   useEffect(() =>{
-    //console.log(currentUser)
+    console.log(currentUser)
     //document.cookie = 'yourCookieName=cookieValue; expires=Sun, 31 Dec 2023 12:00:00 UTC; path=/';
 
     const myCookieValue = Cookies.get("metrolite");
@@ -25,6 +25,7 @@ const Header = () => {
   return (
     <>
       <nav className="LayoutContainer">
+        <span className="UserName">{currentUser.username}</span>
         <ul className="HeaderContainer">
           <li>
             <Link to="/">Home</Link>
