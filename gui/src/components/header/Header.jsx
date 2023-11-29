@@ -6,10 +6,11 @@ import { AuthContext } from "../../context/authContext";
 import "./header.css"
 
 const Header = () => {
-  const {currentUser} = useContext(AuthContext);
+  const {currentUser,selectedCompany} = useContext(AuthContext);
   const navigate = useNavigate()
   useEffect(() =>{
     console.log(currentUser)
+    console.log(selectedCompany)
     //document.cookie = 'yourCookieName=cookieValue; expires=Sun, 31 Dec 2023 12:00:00 UTC; path=/';
 
     const myCookieValue = Cookies.get("metrolite");
@@ -21,11 +22,31 @@ const Header = () => {
       navigate("/login")
     
   },[])
+  
+  const deleteCookie = (cookieName) => {
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
+  
+  
+  const handleLogout = () => {
+    console.log("Logout called")
+    //const pastDate = new Date(0); // Setting the expiration date to a past date
+    //document.cookie = `metrolite=; expires=${pastDate.toUTCString()}; path=/;`;
+
+    // Delete the cookie here
+    // document.cookie = 'metrolite=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    console.log(document.cookie)
+    deleteCookie('metrolite');
+    console.log(document.cookie)
+
+  };
+
 
   return (
     <>
       <nav className="LayoutContainer">
         <span className="UserName">{currentUser.username}</span>
+        <span className="UserName">{selectedCompany.company}</span>
         <ul className="HeaderContainer">
           <li>
             <Link to="/">Home</Link>
@@ -55,6 +76,10 @@ const Header = () => {
             <Link to="/orderverification">Verify Order</Link>
           </li>
         </ul>
+        <button onClick={handleLogout}>
+           Logout
+        </button>
+
       </nav>
 
       <Outlet />
