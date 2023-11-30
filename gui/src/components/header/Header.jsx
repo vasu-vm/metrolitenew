@@ -45,8 +45,13 @@ const Header = () => {
   return (
     <>
       <nav className="LayoutContainer">
-        <span className="UserName">{currentUser.username}</span>
-        <span className="UserName">{selectedCompany.company}</span>
+      
+        {
+          currentUser !== null ? (<span className="UserName">{currentUser.username}</span>) :(<span className="UserName"></span>)
+        }
+        {
+          selectedCompany !== null ? (<span className="UserName">{selectedCompany.company}</span>) :(<span className="UserName"></span>)
+        }
         <ul className="HeaderContainer">
           <li>
             <Link to="/">Home</Link>
