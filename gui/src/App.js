@@ -13,6 +13,7 @@ import Stockdetails from "./components/stockdetails/Stockdetails";
 import Fileupload from "./pages/stockmanagement/Fileupload";
 import Findstock from "./pages/findstock/Findstock";
 import OrderVerification from "./pages/orderverification/OrderVerification";
+import MetOrders from "./components/metorders/MetOrders";
 import "./App.css";
 import "./App.css";
 
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="register" element={ <Register/> }/>
           <Route path="findstock" element={ <Findstock/> }/>
           <Route path="orderverification" element={ <OrderVerification/> }/>
+          <Route path="orders" element={ <MetOrders/> }/>
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

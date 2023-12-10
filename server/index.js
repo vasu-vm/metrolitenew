@@ -18,6 +18,7 @@ const preparestockroutes = require('./controllers/preparestock.controller')
 const printstockroutes = require('./controllers/printstock.controller')
 const authroutes = require('./controllers/authentication.controller')
 const orderverification = require('./controllers/orderverification.controller')
+const metorders = require('./controllers/metorders.controller')
 //middlwware
 const  mysqlPool = mysqlPool1('Roofing');
 
@@ -81,6 +82,8 @@ app.use('/api/preparestock',preparestockroutes)
 app.use('/api/printstock',printstockroutes)
 app.use('/api/auth',authroutes)
 app.use('/api/orderverification' , orderverification)
+app.use('/api/metorders' , metorders)
+
 
 
 // first make sure connection is fine

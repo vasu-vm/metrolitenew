@@ -16,12 +16,15 @@ module.exports.login =  async function(req, res)
     const checkPassword = bcrypt.compareSync(req.body.password, data[0].password);
     if(!checkPassword)
             return res.status(400).json("Wrong user name or pass word!");
-    console.log(data[0])    
+    // console.log(data[0])    
     const token = jwt.sign({username: data[0].username, company: req.body.company}, "secretkey");
         //const token = jwt.sign({ id: data[0].id }, "secretkey");
 
         const { password, ...others } = data[0];
-        console.log("-----------")
+
+        // console.log("-----------")
+    const updatetime = "update metusers set loggedtime = NOW() where username = ?";
+    const [data1] = await db.query(updatetime, [req.body.username])
         res.cookie("metrolite", token, {httpOnly:false  }).status(200).json(others);
     
 }
@@ -43,10 +46,12 @@ module.exports.register = async function(req, res)
 
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+        
         //insert user
         const q2 = "insert into metusers values (?)"
-        const values = [req.body.username,  hashedPassword]
+        const values = [req.body.username,  hashedPassword, formattedDate]
         console.log('Register3')
         const [data1] = await db.query(q2,[values])
         console.log(data1.affectedRows)

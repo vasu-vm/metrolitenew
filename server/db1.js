@@ -1,20 +1,20 @@
 const mysql = require('mysql2/promise');
 const config = {
     database1: {
-      host: 'localhost',
-      user: 'root',
-      password: 'Venus!2#',
-      database: 'vasudb',
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_ROOF,
       waitForConnections: true,
       connectionLimit: 100, // Adjust this limit based on your requirements
       queueLimit: 0
     },
     database2: {
-      host: 'localhost',
-      user: 'root',
-      password: 'Venus!2#',
-      database: 'heavydb',
-      waitForConnections: true,
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_HEAVY,
+       waitForConnections: true,
       connectionLimit: 100, // Adjust this limit based on your requirements
       queueLimit: 0
     },

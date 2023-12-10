@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken') 
+const db1 = require('../db');
 module.exports.checkcompany = function(req,  res){
     const token = req.cookies.metrolite;
     jwt.verify(token, "secretkey", function(err, userInfo){
@@ -13,7 +14,7 @@ module.exports.checkcompany = function(req,  res){
     })
     //return 0;
 }
-module.exports.verify = function(req,  res){
+module.exports.verify =  function(req,  res){
   const token = req.cookies.metrolite;
   // console.log(req.cookies);
   
@@ -35,9 +36,18 @@ module.exports.verify = function(req,  res){
       //res.status(403).json("Invalid Token");
       //return 1;
   }
+  const currentDate = new Date();
+  const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+        
   const company = userInfo['company']
-    
+  const db = db1(company)
+  const user = userInfo['username']
+  const updatetime = "update metusers set loggedtime = ? where username = ?";
+  db.query(updatetime, [formattedDate, user])
+   
+  // console.log("User is" ,user)
   req.company = company;
+  req.user = user;
   //console.log(userInfo)
   })
   //return 0;

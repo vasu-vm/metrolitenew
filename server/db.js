@@ -29,14 +29,3 @@ const config = {
   }
   
   module.exports = createDatabasePool;
-/*const mysqlPool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'Venus!2#',
-    database: 'vasudb'
-})
-
-
-
-module.exports = mysqlPool
-*/
