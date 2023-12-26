@@ -14,6 +14,8 @@ const fileStorageEngine = multer.diskStorage({
             cb(null, 'roofingcoilpurchase.xlsx')
         else if(receivedfilename.toLowerCase().includes("roofing") && receivedfilename.toLowerCase().includes("coildaystat"))
             cb(null, 'roofingcoildaystat.xlsx')
+        else if(receivedfilename.toLowerCase().includes("roofing") && receivedfilename.toLowerCase().includes("daily"))
+            cb(null, 'roofingdaily.xlsx')
         else
             cb(null, Date.now() + "---" + file.originalname)
 

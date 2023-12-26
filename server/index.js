@@ -19,6 +19,7 @@ const printstockroutes = require('./controllers/printstock.controller')
 const authroutes = require('./controllers/authentication.controller')
 const orderverification = require('./controllers/orderverification.controller')
 const metorders = require('./controllers/metorders.controller')
+const dailyupdate = require('./controllers/dailysalespurchase.controller')
 //middlwware
 const  mysqlPool = mysqlPool1('Roofing');
 
@@ -83,6 +84,7 @@ app.use('/api/printstock',printstockroutes)
 app.use('/api/auth',authroutes)
 app.use('/api/orderverification' , orderverification)
 app.use('/api/metorders' , metorders)
+app.use('/api/daily',dailyupdate)
 
 
 

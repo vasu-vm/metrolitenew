@@ -15,6 +15,7 @@ class customerorder
         this.ridges = []
         this.screws = []
         this.miscs = []
+        this.pathy = []
         this.OrderNumber = ordernumber
         this.ltotal = 0.0
         this.errortext = "";
@@ -22,7 +23,7 @@ class customerorder
     print()
     {
         console.log("Customer Order Number is ",this.OrderNumber )
-        this.sheets.forEach(sheet => {
+       /* this.sheets.forEach(sheet => {
             sheet.print()
           });
         this.ridges.forEach(ridge => {
@@ -33,8 +34,11 @@ class customerorder
           });
         this.miscs.forEach(misc => {
             misc.print()
+          }); */
+        this.pathy.forEach(gutter => {
+            gutter.print()
           });
-        
+       
     }
     verify()
     {
@@ -65,6 +69,9 @@ class customerorder
             this.ltotal = this.ltotal + obj.returntotal()
           });
         this.miscs.forEach(obj => {
+            this.ltotal = this.ltotal + obj.returntotal()
+          });
+        this.pathy.forEach(obj => {
             this.ltotal = this.ltotal + obj.returntotal()
           });
         
@@ -130,6 +137,10 @@ class customerorder
     {
         this.miscs.push(misc)
     }
+    addpathy( misc)
+    {
+        this.pathy.push(misc)
+    }
 }
 class metroliteorder
 {
@@ -176,8 +187,8 @@ class metroliteorder
     printdetails()
     {
         console.log("Customer Details are")
-        console.log(`${self.customername}, 4{self.customerphone}, ${self.billingaddress}, 
-            ${self.gstnumber}`)
+        console.log(`${this.customername}, ${this.customerphone}, ${this.billingaddress}, 
+            ${this.gstnumber}`)
         this.customerorders.forEach(obj => {
             obj.print()
             });

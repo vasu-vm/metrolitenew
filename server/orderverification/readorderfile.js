@@ -9,6 +9,7 @@ const orderutilsheet = require('./sheet');
 const orderutilridge = require('./ridge'); 
 const orderutilscrews = require('./screw'); 
 const orderutilsitems = require('./items'); 
+const orderutilpathy = require('./pathy'); 
 const { customerorder, metroliteorder } = require('./metroliteorders'); 
 
 module.exports.verifyorder = async function(req, res, filename)
@@ -29,10 +30,12 @@ module.exports.verifyorder = async function(req, res, filename)
   let ridgetokenflag = 0
   let itemtokenflag = 0
   let screwtokenflag = 0
+  let pathytokenflag = 0
   let ridgeobj1;
   let sheetobj1;
   let screw;
   let miscobj;
+  let pathyobj;
   let metorder;  
   let errortext = "";
 
@@ -165,6 +168,43 @@ module.exports.verifyorder = async function(req, res, filename)
           custorder.addridges(ridgeobj1)
           ridgetokenflag = 0
       }
+      //----------------Pathy--------------
+      else if(row[0].toUpperCase() == "P1")
+      {
+          if((sheettokenflag == 1) || (ridgetokenflag == 1) ||  (itemtokenflag == 1)
+            || (screwtokenflag == 1) || (pathytokenflag == 1))
+          {
+              console.log("Error in Token")
+              errortext = errortext + "Error in Token"
+              return(errortext)
+              
+          }
+          pathytokenflag = 1
+          // #print("Sheet Details")
+          pathyobj = new orderutilpathy()
+          
+      }
+      else if(row[0].toUpperCase().includes("P3"))
+      {
+          // #ftlength,Inlength, InMM, width ,number,area
+          pathyobj.addtotypes( row[0],row[5], row[6], row[7])
+          
+      }
+      else if(row[0].toUpperCase() == "P4")
+      {
+          if(customerorderflag == 0)
+          {
+              console.log("Error in C2 Token")
+              errortext = errortext + "Error in C2 Token"
+              return(errortext)
+              
+          }
+          pathyobj.addattributes(row[7])
+          // #ridgeobj.print()
+          custorder.addpathy(pathyobj)
+          pathytokenflag = 0
+      }
+      //----------------End Pathy tokens----
       else if(row[0].toUpperCase() == "SC1")
       {
           if((sheettokenflag == 1) || (ridgetokenflag == 1) || (itemtokenflag == 1)
@@ -231,6 +271,7 @@ module.exports.verifyorder = async function(req, res, filename)
           metorder.addcustomerorder(custorder)
           metorder.verifyorder()
           metorder.verifytotal()
+          metorder.print()
           // console.log("Result",metorder.returnerrortext())
           let text1 = metorder.returnerrortext()
           //console.log(text1)

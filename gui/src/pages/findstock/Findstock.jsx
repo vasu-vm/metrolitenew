@@ -10,7 +10,10 @@ const Findstock = () => {
   const [colours, setColours] = useState([]);
   const [thickness, setThickness] = useState([]);
   const [brands, setBrands] = useState([]);
-
+  const [filedaily, setFileDaily] = useState([]);
+  const [uploadstatusdaily, setUploadStatusDaily] = useState(false)
+  const buttonText = uploadstatusdaily ? 'Uploaded' : 'Upload';
+  const [insertstatus, setInsertStatus] = useState(false)
   const [inputs, setInputs] = useState({
     brand: "C+",
     thickness: "0.35",
@@ -18,6 +21,17 @@ const Findstock = () => {
     gfstatus: "Y",
     azvalue: "150"
   }) 
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+  };
+
+  const handleEndDateChange = (event) => {
+    setEndDate(event.target.value);
+  };
+
   // Define a function to update the value of an element
   const updateElementValue = (elementName, newValue) => {
   // Create a new object with the updated value
@@ -136,6 +150,7 @@ const Findstock = () => {
   const options4 = ['Y', 'N' ];
   const options5 = ['150', '70', '0'];
 
+
   const handleClick = async() =>{
     try {
       const response = await api.post('/stocksummary' , inputs)
@@ -155,7 +170,66 @@ const Findstock = () => {
       }
     }
   }
+  const fileChangeHandlerDaily = (e) => {
+    const fileInput = e.target;
+    if(fileInput.files.length === 0)
+    {
+      setFileDaily([]);
+      return
+    }
+    const fileInputName = fileInput.files[0].name.toLowerCase();
+    if((fileInput.files.length > 0) && (fileInputName.includes("daily")))
+        setFileDaily(e.target.files[0]);
+    else
+        setFileDaily([]);
+};
+const onSubmitHandlerDaily =  (e) => {
+  e.preventDefault();
 
+  // Handle File Data from the state Before Sending
+  const data = new FormData();
+
+  data.append("xlfile", filedaily);
+
+  fetch("http://localhost:3002/api/fileupload", {
+    method: "POST",
+    credentials: 'include' ,
+    body: data,
+  })
+    .then((result) => {
+      console.log(result.status)
+      if(result.status > 400)
+        navigate("/login")
+      console.log("File Sent Successful");
+      setUploadStatusDaily(true)
+      setFileDaily([])
+      
+    })
+    .catch((err) => {
+      console.log(err.message);
+      navigate("/login")
+    });
+};
+const handleDailyUpdate = async (event, type) => {
+  event.preventDefault();
+  console.log("handleInsert")
+  
+  try {
+    const response = await api.get('/daily' )
+    console.log(response.data)
+    setInsertStatus(true)
+    setUploadStatusDaily(false)
+  }catch (err) {
+    if(err.response){
+      console.log(err.response.data)
+      console.log(err.response.status)
+      console.log(err.response.header)
+    } else {
+      console.log('Error: ${err.message}');
+      
+    }
+  }
+}
 
   return (
     <div className="findstockcontainer">
@@ -216,14 +290,57 @@ const Findstock = () => {
         </select>
       </div>
       <div>
-        <p>Selected Value 1: {inputs['brand']}</p>
-        <p>Selected Value 2: {inputs['thickness']}</p>
-        <p>Selected Value 3: {inputs['colour']}</p>
-        <p>Selected Value 4: {inputs['gfstatus']}</p>
+        {/* <p>Selected Value 1: {inputs['brand']}</p> */}
+        {/* <p>Selected Value 2: {inputs['thickness']}</p> */}
+        {/* <p>Selected Value 3: {inputs['colour']}</p> */}
+        {/* <p>Selected Value 4: {inputs['gfstatus']}</p> */}
       </div>
       <button className="loginButton" onClick={handleClick}>Find Stock</button>
       <p> `Stock Value is {sqft} sqft`</p>
+      <div style={{ marginTop: '5px', display: 'flex' , alignItems: 'center' , gap: '10px'}}>
+        <input
+          type="file"
+          accept= ".xlsx"
+          onChange={fileChangeHandlerDaily}
+          style={{ display: 'none' }}
+          id="fileInput" // Associate a label with this input
+        />
+        <label htmlFor="fileInput" className="FileSelection">Choose Purchase File</label>
+        <p>{filedaily.name}</p>
+        <button className="StockButton" onClick={onSubmitHandlerDaily}>{buttonText}</button>
+      </div>
+      <div className="InsertArea">
+            <button className="StockButton" onClick={handleDailyUpdate}>Update Daily Stat</button>
+            {insertstatus ? (<p>Updated</p>) :(<p></p>)}
+      </div>
+      <div>
+      <h2>Select Date Range</h2>
+      <div>
+        <label htmlFor="startDate">From Date:</label>
+        <input
+          type="date"
+          id="startDate"
+          value={startDate}
+          onChange={handleStartDateChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="endDate">To Date:</label>
+        <input
+          type="date"
+          id="endDate"
+          value={endDate}
+          onChange={handleEndDateChange}
+        />
+      </div>
+      {startDate && endDate && (
+        <p>
+          Selected Date Range: {startDate} to {endDate}
+        </p>
+      )}
+    </div>      
     </div>
+    
   );
 };
 
