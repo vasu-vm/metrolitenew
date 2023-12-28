@@ -169,7 +169,7 @@ module.exports.verifyorder = async function(req, res, filename)
           ridgetokenflag = 0
       }
       //----------------Pathy--------------
-      else if(row[0].toUpperCase() == "P1")
+      else if(row[0].toUpperCase() == "V1")
       {
           if((sheettokenflag == 1) || (ridgetokenflag == 1) ||  (itemtokenflag == 1)
             || (screwtokenflag == 1) || (pathytokenflag == 1))
@@ -184,13 +184,13 @@ module.exports.verifyorder = async function(req, res, filename)
           pathyobj = new orderutilpathy()
           
       }
-      else if(row[0].toUpperCase().includes("P3"))
+      else if(row[0].toUpperCase().includes("V3"))
       {
           // #ftlength,Inlength, InMM, width ,number,area
           pathyobj.addtotypes( row[0],row[5], row[6], row[7])
           
       }
-      else if(row[0].toUpperCase() == "P4")
+      else if(row[0].toUpperCase() == "V4")
       {
           if(customerorderflag == 0)
           {
@@ -246,7 +246,7 @@ module.exports.verifyorder = async function(req, res, filename)
               
           }    
           itemtokenflag = 1
-          miscobj = orderutilsitems(row[1])
+          miscobj = new orderutilsitems(row[1])
           miscobj.addattributes(row[2],row[3], row[4], row[6])
       }
       else if(row[0].toUpperCase() == "A3")

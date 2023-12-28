@@ -32,8 +32,8 @@ class items
     {
         let area = calculateareainsqft(this.LenInFt,
                this.LenInInch,this.Width,this.Num)
-        larea = Number(area) - Number(this.Area)
-        if(abs(larea) >= 1)
+        let larea = Number(area) - Number(this.Area)
+        if(Math.abs(larea) >= 1)
         {
             this.errortext = `Area Calc Error ${area} from XL ${this.Area}`
             //console.log("Error in area calculation items")
@@ -116,7 +116,7 @@ class misc
         console.log("Item attributes are","Brand ", this.brand,"AZ Value", this.azvalue,
               "GF Status",this.gfvalue,this.thickness, this.colour, this.rate)
         console.log("Item Details are")
-        itemsarray.forEach(obj => {
+        this.itemsarray.forEach(obj => {
             obj.print()
             
           });
@@ -127,7 +127,7 @@ class misc
     }        
     addtoitems( ftlength,Inlength, InMM, width ,number,area)
     {
-        itemstype = new items(ftlength,Inlength, InMM, width ,number,area)
+        let itemstype = new items(ftlength,Inlength, InMM, width ,number,area)
         this.itemsarray.push(itemstype)
     }
         
@@ -145,7 +145,7 @@ class misc
     }
     verify()
     {
-        itemsarray.forEach(obj => {
+        this.itemsarray.forEach(obj => {
             obj.verify()
             this.totalarea1 = Number(this.totalarea1) + Number(obj.returnarea())
             this.totalitems1 = Number(this.totalitems1) + Number(obj.returnnumber())
@@ -157,7 +157,7 @@ class misc
         /* metrolitefunctions.printarea(this.brand, this.colour, this.thickness,\
                 this.gfvalue, this.azvalue,this.totalarea,this.name)
         */
-        diffval = Number(this.totalarea1) - Number(this.totalarea)
+        let diffval = Number(this.totalarea1) - Number(this.totalarea)
         if(Math.abs(diffval) >= 1)
         {
             this.errortext = `Error Total Calculated = ${this.totalarea1}, From XL file = ${this.totalarea}`
