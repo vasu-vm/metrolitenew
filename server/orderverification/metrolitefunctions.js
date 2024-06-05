@@ -58,7 +58,7 @@ function returngfvalue(inputstring)
     {
         return "Y"
     }
-    console.log("returngfvalue" ,string1)
+    //console.log("returngfvalue" ,string1)
     return "U"
 }
 

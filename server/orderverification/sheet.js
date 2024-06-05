@@ -6,6 +6,7 @@ class sheetarray
     constructor(ftlength,Inlength, InMM, width, number,area) 
     {
       this.errortext = ""
+      this.warningtext = ""
       this.LenInFt = ftlength
       this.LenInInch = Inlength  
       if(InMM == "")
@@ -64,6 +65,10 @@ class sheetarray
     {
         return(this.errortext);
     }
+    returnwarningtext()
+    {
+        return(this.warningtext);
+    }
 }
   
 class Sheet 
@@ -71,6 +76,7 @@ class Sheet
     constructor()
     {
         this.errortext = "";
+        this.warningtext = ""
         this.rate = 0.0
         this.totalsheets1 = 0
         this.totalarea1 = 0.0
@@ -87,9 +93,42 @@ class Sheet
         this.totalnumsheet = 0
         this.totalarea = 0.0
         this.totalamount = 0.0
+        this.type = 0
     }
     //def __init__(this)
-        
+    addType(SheetType)
+    {
+        const lowerCaseStr = SheetType.toLowerCase();
+        if ((lowerCaseStr.includes("6")) && ((lowerCaseStr.includes("trafford"))
+        || (lowerCaseStr.includes("sheet"))))
+        {
+            this.type = 1;
+            console.log("Normal 6 rib sheet")
+           
+        }
+        else if((lowerCaseStr.includes("21")) && (lowerCaseStr.includes("liner"))) 
+        {
+            this.type = 2;    
+            console.log("Liner 21 rib sheet")        
+        }
+        else if((lowerCaseStr.includes("23")) && (lowerCaseStr.includes("liner"))) 
+        {
+            this.type = 3; 
+            console.log("Liner 23 rib sheet")           
+        }
+        else if((lowerCaseStr.includes("14")) && (lowerCaseStr.includes("liner"))) 
+        {
+            this.type = 4;   
+            console.log("Liner 14 rib sheet")         
+        }
+        else{
+            this.errortext = this.errortext + "Invalid sheet type"
+        }
+    }
+    getType()
+    {
+        return(this.type)
+    }   
     addattributes(Brand,Thickness,Colour,Rate)
     {
         //Checking Brand is C+ or not
@@ -156,6 +195,22 @@ class Sheet
     }        
     addtosheetarray(ftlength,Inlength, InMM, width ,number,area)
     {
+        if((this.type == 1) && (width != 3.61))
+        {
+            this.warningtext = this.warningtext + `Width may not be correct ${width},expected is 3.61`
+        }
+        if((this.type == 2) && (width != 3.8))
+        {
+            this.warningtext = this.warningtext + `Width may not be correct ${width},expected is 3.8`
+        }
+        if((this.type == 3) && (width != 3.83))
+        {
+            this.warningtext = this.warningtext + `Width may not be correct ${width},expected is 3.83`
+        }
+        if((this.type == 4) && (width != 3.75))
+        {
+            this.warningtext = this.warningtext + `Width may not be correct ${width},expected is 3.75`
+        }
         // console.log("addtosheetarray",ftlength,Inlength, InMM, width ,number,area)
         let sheetelement = new sheetarray(ftlength,Inlength, InMM, width ,number,area)
         this.sheetarray.push(sheetelement)
@@ -177,6 +232,18 @@ class Sheet
         
         return(this.errortext)  
     }   
+    returnwarningtext()
+    {
+        let lwarningtext= "";
+        this.sheetarray.forEach(sheet => {
+         
+            lerrortext = lerrortext + sheet.returnwarningtext()
+           
+          });
+        this.warningtext =  this.warningtext + lwarningtext;
+        
+        return(this.warningtext)  
+    }
 // #verify the sheet details
     verify()
     {

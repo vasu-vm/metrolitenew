@@ -1,4 +1,6 @@
 const Sheet = require('./sheet');
+const { returnbrand, returnazvalue,returngfvalue,calculatefeetttommvalue,
+    calculateinchttommvalue,calculateareainsqft } = require('./metrolitefunctions');
 
 /* import csv
 import pandas as pd
@@ -19,6 +21,52 @@ class customerorder
         this.OrderNumber = ordernumber
         this.ltotal = 0.0
         this.errortext = "";
+        this.warningtext = ""
+        this.lastsheetthickness = 0.00
+        this.lastsheetbrand =""
+        this.lastsheetcolour =""
+        this.lastsheetgfvalue = ""
+        this.lastsheetazvalue = ""
+        this.lastsheettype = 0
+    }
+    setlastsheettype(sheettype)
+    {
+        this.lastsheettype = sheettype;
+    }
+    addlastsheetattributes(Brand,Thickness,Colour,Rate)
+    {
+        //Checking Brand is C+ or not
+        this.lastsheetbrand = returnbrand(Brand)
+        this.lastsheetgfvalue = returngfvalue(Brand)
+        this.lastsheetthickness = Thickness
+        this.lastsheetcolour = Colour
+        this.lastsheetazvalue = returnazvalue(Brand)
+       
+    }
+    verifyridgetosheet(Brand,Thickness,Colour,Rate)
+    {
+        // Checking Brand is C+ or not
+        // console.log(`ridgetosheet ${Brand} - ${Thickness} - ${Colour} `)
+        let ridgebrand = returnbrand(Brand)
+        let ridgegfvalue = returngfvalue(Brand)
+        let ridgethickness = Thickness
+        let ridgecolour = Colour 
+        let ridgeazvalue = returnazvalue(Brand)
+        if(this.lastsheettype > 1)
+        {
+            this.warningtext = this.warningtext + "ridge order with liner sheet - abnormal"  
+        }
+        if(ridgebrand != this.lastsheetbrand)
+            this.warningtext = this.warningtext + "mismatch in sheet and ridge brand"
+        if(ridgegfvalue != this.lastsheetgfvalue )
+            this.warningtext = this.warningtext + "mismatch in sheet and ridge GF status"
+        if(ridgethickness != this.lastsheetthickness )
+            this.warningtext = this.warningtext + "mismatch in sheet and ridge thickness"
+        if(ridgecolour != this.lastsheetcolour)
+            this.warningtext = this.warningtext + "mismatch in sheet and ridge colour"
+        if(ridgeazvalue != this.lastsheetazvalue)
+            this.warningtext = this.warningtext + "mismatch in sheet and ridge az value"
+       
     }
     print()
     {
@@ -77,10 +125,25 @@ class customerorder
         
         return(Number(this.ltotal))
     }
+    returnwarningtext()
+    {
+        
+        let lerrortext = "";
+        //console.log(this.OrderNumber, "Customer Order")
+        this.sheets.forEach(obj => {
+            lerrortext = obj.returnwarningtext()
+            if(lerrortext.length > 1)
+            {
+                this.warningtext = this.warningtext + lerrortext
+                
+            }
+          });
+          return(this.warningtext)
+    }
     returnerrortext()
     {
         let lerrortext = "";
-        console.log(this.OrderNumber, "Customer Order")
+        //console.log(this.OrderNumber, "Customer Order")
         this.sheets.forEach(obj => {
             lerrortext = obj.returnerrortext()
             if(lerrortext.length > 1)
@@ -158,6 +221,7 @@ class metroliteorder
         this.Name = name
         this.ltotal = 0.0
         this.errortext = ""
+        this.warningtext = ""
     }
     print()
     {
@@ -196,9 +260,9 @@ class metroliteorder
     }
     verifyorder()
     {
-        console.log("Customer Verification Details are")
-        console.log(`${this.customername}, ${this.customerphone}, ${this.billingaddress}, 
-            ${this.gstnumber}`)
+        //console.log("Customer Verification Details are")
+        //console.log(`${this.customername}, ${this.customerphone}, ${this.billingaddress}, 
+        //    ${this.gstnumber}`)
         this.customerorders.forEach(obj => {
                 obj.verify()
         });
@@ -206,7 +270,7 @@ class metroliteorder
     }
     addcustomerorder(custorder)
     {
-        console.log("addcustomer order called")
+        //console.log("addcustomer order called")
         let custordertemp = custorder
         this.customerorders.push(custordertemp)
     }
@@ -232,6 +296,22 @@ class metroliteorder
             }
         });
         return(this.errortext)
+    }
+
+    returnwarningtext()
+    {
+        // console.log("metrolite Order Errortext Checking")
+        let lwarningtext = ""
+        this.customerorders.forEach(obj => {
+            // console.log("metrolite Order Errortext Checking Inside")
+            lwarningtext=  obj.returnwarningtext()
+            if(lwarningtext.length > 1)
+            {
+                // console.log(lerrortext, "********************")
+                this.warningtext = this.warningtext + lwarningtext
+            }
+        });
+        return(this.warningtext)
     }
          
     verifytotal()

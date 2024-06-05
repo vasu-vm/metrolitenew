@@ -66,6 +66,11 @@ function OrderVerification() {
   
 const handleVerify = async (event, type) => {
     event.preventDefault();
+    if(orderfile.name === undefined)
+    {
+      console.log("No file to verify")
+      return
+    }
     if(orderfile.name.length === 0)
     {
       console.log("No file to verify")

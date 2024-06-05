@@ -13,8 +13,10 @@ export const AuthContextProvider = ({ children }) => {
   );
    const login = async (inputs) => {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}auth/login`, inputs, {
-      withCredentials: true,
-    });
+      withCredentials: true, 
+      
+      
+      });
     const updatedInput = { ...inputs };
 
     // Use the JavaScript `delete` keyword to remove the item

@@ -4,6 +4,7 @@ const XLSX = require('xlsx');
 const fs = require('fs');
 const path = require('path')
 // const fs = require('fs');
+
 const readline = require('readline');
 const orderutilsheet = require('./sheet'); 
 const orderutilridge = require('./ridge'); 
@@ -106,6 +107,9 @@ module.exports.verifyorder = async function(req, res, filename)
           sheettokenflag = 1
           sheetobj1 = new orderutilsheet()
           sheetobj1.addattributes(row[2], row[3], row[4],row[6])
+          sheetobj1.addType(row[1])
+          custorder.setlastsheettype(sheetobj1.getType())
+          custorder.addlastsheetattributes(row[2], row[3], row[4],row[6])
           //#special case of missing s3 tokens  
       }  
       else if((row[0] == "") && (sheettokenflag == 1) && (row[3] != ""))
@@ -148,6 +152,7 @@ module.exports.verifyorder = async function(req, res, filename)
           // #print("Sheet Details")
           ridgeobj1 = new orderutilridge()
           ridgeobj1.addattributes(row[2], row[3], row[4],row[6])
+          custorder.verifyridgetosheet(row[2], row[3], row[4],row[6])
       }
       else if(row[0].toUpperCase() == "R3")
       {
@@ -274,11 +279,26 @@ module.exports.verifyorder = async function(req, res, filename)
           metorder.print()
           // console.log("Result",metorder.returnerrortext())
           let text1 = metorder.returnerrortext()
+          let text2 = metorder.returnwarningtext()
+          if(text2.length > 1)
+          {
+            console.log(`Warning is ${text2}`)
+          }
           //console.log(text1)
           if(text1.length > 1)
+          {
+            console.log(text1.length , "Error text length")
             res.status(201).send(`Result is ${text1}`)
+          }
+          else if (text2.length > 1)
+          {
+            res.status(201).send(`Warning -- ${text2}`)
+          }
           else
+          {
             res.status(201).send("Success")
+          }
+            
 
           // return(metorder.returnerrortext())
 
